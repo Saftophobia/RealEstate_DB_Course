@@ -7,4 +7,4 @@
 2. Sun Java JDK
 3. LAMP + phpmyadmin (tip, use tasksel)
 4. Guake Terminal
-5. Vrapper (vim plugin for eclipse)
+5. IdeaVIM (vim plugin for IntellJ)
