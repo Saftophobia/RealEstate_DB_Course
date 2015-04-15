@@ -2,7 +2,8 @@ drop database RealStates;
 
 create database RealStates;
 
-use RealStates;
+use RealStates;# MySQL returned an empty result set (i.e. zero rows).
+
 
 CREATE TABLE EstateAgent(
 	ID int NOT NULL AUTO_INCREMENT,
@@ -11,7 +12,7 @@ CREATE TABLE EstateAgent(
 	LOGIN varchar(5),
 	PASSWORD varchar(50),
 	PRIMARY KEY (ID)
-	);	
+	);	# MySQL returned an empty result set (i.e. zero rows).
 
 CREATE TABLE Estate(
 	ID int NOT NULL AUTO_INCREMENT,
@@ -23,15 +24,18 @@ CREATE TABLE Estate(
 	EstateAgent_ID int,
 	PRIMARY KEY (ID),
 	FOREIGN KEY (EstateAgent_ID) REFERENCES EstateAgent(ID)
-	);
+	);# MySQL returned an empty result set (i.e. zero rows).
 
 CREATE TABLE House(
 	ID int NOT NULL AUTO_INCREMENT,
 	FLOORS int,
 	PRICE int,
 	GARDEN boolean,
-	PRIMARY KEY (ID)
-);
+	Estate_ID int,
+	PRIMARY KEY (ID),
+	FOREIGN KEY (Estate_ID) REFERENCES Estate(ID)
+);# MySQL returned an empty result set (i.e. zero rows).
+
 
 CREATE TABLE Apartment(
 	ID int NOT NULL AUTO_INCREMENT,
@@ -40,8 +44,11 @@ CREATE TABLE Apartment(
 	ROOMS int,
 	BALCONY boolean,
 	KITCHEN boolean,
-	PRIMARY KEY (ID)
-);
+    Estate_ID int,
+	PRIMARY KEY (ID),
+	FOREIGN KEY (Estate_ID) REFERENCES Estate(ID)
+);# MySQL returned an empty result set (i.e. zero rows).
+
 
 CREATE TABLE Person(
 	ID int NOT NULL AUTO_INCREMENT,
@@ -49,24 +56,8 @@ CREATE TABLE Person(
 	NAME varchar(255),
 	ADDRESS varchar(255),
 	PRIMARY KEY (ID)
-);
+);# MySQL returned an empty result set (i.e. zero rows).
 
-
-CREATE TABLE PurchaseContract(
-	ID int NOT NULL AUTO_INCREMENT,
-	INSTALLEMENTS int,
-	INTEREST_RATE float,
-	PRIMARY KEY (ID)
-);
-
-
-CREATE TABLE TenancyContract(
-	ID int NOT NULL AUTO_INCREMENT,
-	START_DATE DATETIME,
-	DURATION int,
-	ADD_COSTS int,
-	PRIMARY KEY (ID)
-);
 
 CREATE TABLE Contract(
 	ID int NOT NULL AUTO_INCREMENT,
@@ -74,8 +65,29 @@ CREATE TABLE Contract(
 	DATE DATETIME ,
 	PLACE varchar(255),
 	PRIMARY KEY (ID)
-);
+);# MySQL returned an empty result set (i.e. zero rows).
 
 
+
+CREATE TABLE PurchaseContract(
+	ID int NOT NULL AUTO_INCREMENT,
+	INSTALLEMENTS int,
+	INTEREST_RATE float,
+    Contract_ID int,
+	PRIMARY KEY (ID),
+	FOREIGN KEY (Contract_ID) REFERENCES Contract(ID)
+);# MySQL returned an empty result set (i.e. zero rows).
+
+
+
+CREATE TABLE TenancyContract(
+	ID int NOT NULL AUTO_INCREMENT,
+	START_DATE DATETIME,
+	DURATION int,
+	ADD_COSTS int,
+    Contract_ID int,
+	PRIMARY KEY (ID),
+	FOREIGN KEY (Contract_ID) REFERENCES Contract(ID)
+);# MySQL returned an empty result set (i.e. zero rows).
 
 
