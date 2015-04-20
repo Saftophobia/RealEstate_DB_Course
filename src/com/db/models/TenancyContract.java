@@ -1,7 +1,156 @@
 package com.db.models;
 
+import com.db.conn.DBConnectionManager;
+
+import java.sql.*;
+
 /**
  * Created by saftophobia on 4/20/15.
  */
-public class TenancyContract {
+public class TenancyContract extends Contract{
+
+    private int tenancy_id = -1;
+    private String start_date;
+    private int duration;
+    private int add_costs;
+    private int contract_id = -1;
+
+    public TenancyContract(){
+        super();
+    }
+
+    public TenancyContract(String start_date, int duration, int add_costs){
+        super();
+        this.start_date = start_date;
+        this.duration = duration;
+        this.add_costs = add_costs;
+    }
+
+
+    public static TenancyContract load(int id){
+        try {
+            Connection con = DBConnectionManager.getInstance("mysql").getConnection();
+
+            String selectSQL = "SELECT * FROM TenancyContract WHERE id = ?";
+            PreparedStatement pstmt = con.prepareStatement(selectSQL);
+            pstmt.setInt(1, id);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                TenancyContract ts = new TenancyContract();
+                ts.setTenancy_id(id);
+                ts.setStart_date(rs.getString("installments"));
+                ts.setDuration(rs.getInt("place"));
+                ts.setAdd_costs(rs.getInt("add_costs"));
+                ts.setContract_id(rs.getInt("contract_id"));
+
+                //get Associated Contract and load the data
+                Contract ms = Contract.load(ts.getContract_id());
+                ts.setNumber(ms.getNumber());
+                ts.setDate(ms.getDate());
+                ts.setPlace(ms.getPlace());
+
+                rs.close();
+                pstmt.close();
+
+                return ts;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+    @Override
+    public void save(){
+        // Hole Verbindung
+        Connection con = DBConnectionManager.getInstance("mysql").getConnection();
+
+        try {
+
+            if (getId() == -1) {
+
+                //saved new contract
+                Contract c= new Contract(this.getNumber(),this.getDate(),this.getPlace());
+                this.setContract_id(c.getId());
+                c.save();
+
+                String insertSQL = "INSERT INTO TenancyContract(start_date, duration, add_costs, Contract_ID) VALUES (?, ?, ?, ?)";
+
+                PreparedStatement pstmt = con.prepareStatement(insertSQL,
+                        Statement.RETURN_GENERATED_KEYS);
+
+                pstmt.setString(1, getStart_date());
+                pstmt.setInt(2, getDuration());
+                pstmt.setInt(3, getAdd_costs());
+                pstmt.setInt(4, getContract_id());
+                pstmt.executeUpdate();
+
+                ResultSet rs = pstmt.getGeneratedKeys();
+                if (rs.next()) {
+                    setId(rs.getInt(1));
+                }
+
+                rs.close();
+                pstmt.close();
+            } else {
+                String updateSQL = "UPDATE Contract SET start_date = ?, duration = ?, add_costs = ? ,contract_ID = ? WHERE id = ?";
+                PreparedStatement pstmt = con.prepareStatement(updateSQL);
+
+                pstmt.setString(1, getStart_date());
+                pstmt.setInt(2, getDuration());
+                pstmt.setInt(3, getAdd_costs());
+                pstmt.setInt(4, getContract_id());
+                pstmt.setInt(5, getId());
+                pstmt.executeUpdate();
+
+                pstmt.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public int getTenancy_id() {
+        return tenancy_id;
+    }
+
+    public void setTenancy_id(int tenancy_id) {
+        this.tenancy_id = tenancy_id;
+    }
+
+    public String getStart_date() {
+        return start_date;
+    }
+
+    public void setStart_date(String start_date) {
+        this.start_date = start_date;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public int getAdd_costs() {
+        return add_costs;
+    }
+
+    public void setAdd_costs(int add_costs) {
+        this.add_costs = add_costs;
+    }
+
+    public int getContract_id() {
+        return contract_id;
+    }
+
+    public void setContract_id(int contract_id) {
+        this.contract_id = contract_id;
+    }
 }

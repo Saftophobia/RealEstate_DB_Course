@@ -2,36 +2,42 @@ package com.db.models;
 
 import com.db.conn.DBConnectionManager;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Created by saftophobia on 4/20/15.
  */
-public class EntityAgent {
+public class EstateAgent {
     private int id = -1 ;
     private String name;
     private String address;
     private String login;
     private String password;
 
+    public EstateAgent() {}
 
-    public static EntityAgent load(int id) {
+    public EstateAgent(String name, String address, String login, String password) {
+        this.name = name;
+        this.address = address;
+        this.login = login;
+        this.password = password;
+    }
+
+
+    public static EstateAgent load(int id) {
         try {
             // Hole Verbindung
             Connection con = DBConnectionManager.getInstance("mysql").getConnection();
 
             // Erzeuge Anfrage
-            String selectSQL = "SELECT * FROM entityagent WHERE id = ?";
+            String selectSQL = "SELECT * FROM EstateAgent WHERE id = ?";
             PreparedStatement pstmt = con.prepareStatement(selectSQL);
             pstmt.setInt(1, id);
 
             // Führe Anfrage aus
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                EntityAgent ts = new EntityAgent();
+                EstateAgent ts = new EstateAgent();
                 ts.setId(id);
                 ts.setName(rs.getString("name"));
                 ts.setAddress(rs.getString("address"));
@@ -48,6 +54,50 @@ public class EntityAgent {
         return null;
     }
 
+
+
+    public void save() {
+        // Hole Verbindung
+        Connection con = DBConnectionManager.getInstance("mysql").getConnection();
+
+        try {
+
+            if (getId() == -1) {
+                String insertSQL = "INSERT INTO EstateAgent(name, address, login, password) VALUES (?, ?, ?, ?)";
+
+                PreparedStatement pstmt = con.prepareStatement(insertSQL,
+                        Statement.RETURN_GENERATED_KEYS);
+
+                pstmt.setString(1, getName());
+                pstmt.setString(2, getAddress());
+                pstmt.setString(3, getLogin());
+                pstmt.setString(4, getPassword());
+                pstmt.executeUpdate();
+
+                ResultSet rs = pstmt.getGeneratedKeys();
+                if (rs.next()) {
+                    setId(rs.getInt(1));
+                }
+
+                rs.close();
+                pstmt.close();
+            } else {
+                String updateSQL = "UPDATE EstateAgent SET name = ?, address = ?, login = ?, password = ? WHERE id = ?";
+                PreparedStatement pstmt = con.prepareStatement(updateSQL);
+
+                pstmt.setString(1, getName());
+                pstmt.setString(2, getAddress());
+                pstmt.setString(3, getLogin());
+                pstmt.setString(4, getPassword());
+                pstmt.setInt(5, getId());
+                pstmt.executeUpdate();
+
+                pstmt.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public int getId() {
         return id;
