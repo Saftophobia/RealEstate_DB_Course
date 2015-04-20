@@ -13,12 +13,20 @@ import java.sql.*;
  PRIMARY KEY (ID));
  * Created by saftophobia on 4/13/15.
  */
-public class Person {
+public class Person extends Model{
     private int id = -1 ;
     private String FIRST_NAME;
     private String Name;
     private String Address;
 
+
+    public Person() {super();}
+
+    public Person(String FIRST_NAME, String name, String address) {
+        this.FIRST_NAME = FIRST_NAME;
+        Name = name;
+        Address = address;
+    }
 
     public static Person load(int id) {
         try {
@@ -50,7 +58,11 @@ public class Person {
     }
 
 
-    public void save() {
+
+
+
+
+    public boolean save() {
         // Hole Verbindung
         Connection con = DBConnectionManager.getInstance("mysql").getConnection();
 
@@ -74,6 +86,7 @@ public class Person {
 
                 rs.close();
                 pstmt.close();
+                return true;
             } else {
                 String updateSQL = "UPDATE Person SET First_name = ?, Name = ?, Address = ? WHERE id = ?";
                 PreparedStatement pstmt = con.prepareStatement(updateSQL);
@@ -85,15 +98,13 @@ public class Person {
                 pstmt.executeUpdate();
 
                 pstmt.close();
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
-
-
-
-
 
     //setters and getters
     public String getFirstName() {
