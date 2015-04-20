@@ -7,7 +7,7 @@ import java.sql.*;
 /**
  * Created by saftophobia on 4/20/15.
  */
-public class Estate {
+public class Estate extends Model{
     private int id = -1;
     private String city;
     private int postalCode;
@@ -53,6 +53,7 @@ public class Estate {
         }
         return null;
     }
+
 
 
     public void save() {

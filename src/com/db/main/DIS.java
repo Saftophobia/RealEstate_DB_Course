@@ -11,12 +11,14 @@ import java.util.Date;
 public class DIS {
 
     public static void main(String [] args){
+
+
         new EstateAgent("ahmed","holsteiner","iron","stor").save();
 
-        EstateAgent s= EstateAgent.load(1);
-        System.out.println(s.getName());
-        s.setPassword("gro");
-        s.save();
+//        EstateAgent s= EstateAgent.load(1);
+//        System.out.println(s.getName());
+//        s.setPassword("gro");
+//        s.save();
 
 
         new Contract(123, new java.sql.Date(new java.util.Date().getTime()),"iron").save();
@@ -29,7 +31,9 @@ public class DIS {
         new EstateAgent("agency","holer","root","root").save();
 
 
-        System.out.println(Model.delete("Person", 1));
+
+        System.out.println(Model.delete("Contract", 6));
+
 
     }
 }
