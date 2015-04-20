@@ -25,14 +25,11 @@ public class PurchaseContract extends Contract {
         super();
     }
 
-    public PurchaseContract(int purchase_id, int installments, float interestRate){
-        super();
-        this.purchase_id = purchase_id;
+    public PurchaseContract(int contract_number, Date date, String place, int installments, float interestRate) {
+        super(contract_number, date, place);
         this.installments = installments;
         this.interestRate = interestRate;
     }
-
-
 
     public static PurchaseContract load(int id){
         try {
@@ -80,8 +77,8 @@ public class PurchaseContract extends Contract {
 
                 //saved new contract
                 Contract c= new Contract(this.getNumber(),this.getDate(),this.getPlace());
-                this.setContract_id(c.getId());
                 c.save();
+                this.setContract_id(c.getId());
 
                 String insertSQL = "INSERT INTO PurchaseContract(installments, interest_Rate, Contract_ID) VALUES (?, ?, ?)";
 

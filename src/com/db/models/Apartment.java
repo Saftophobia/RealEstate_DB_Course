@@ -7,9 +7,9 @@ import java.sql.*;
 /**
  * Created by saftophobia on 4/20/15.
  */
-public class Appartment extends Estate{
+public class Apartment extends Estate{
 
-    private int appartment_id = -1;
+    private int apartment_id = -1;
     private int floor;
     private int rent;
     private int rooms;
@@ -17,9 +17,18 @@ public class Appartment extends Estate{
     private boolean kitchen;
     private int Estate_ID;
 
-    public Appartment() { super();}
+    public Apartment() { super();}
 
-    public static Appartment load(int id){
+    public Apartment(String city, int postalCode, String street, int streetNumber, int squareArea, int floor, int rent, int rooms, boolean balcony, boolean kitchen) {
+        super(city, postalCode, street, streetNumber, squareArea);
+        this.floor = floor;
+        this.rent = rent;
+        this.rooms = rooms;
+        this.balcony = balcony;
+        this.kitchen = kitchen;
+    }
+
+    public static Apartment load(int id){
         try {
             Connection con = DBConnectionManager.getInstance("mysql").getConnection();
 
@@ -29,8 +38,8 @@ public class Appartment extends Estate{
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                Appartment ts = new Appartment();
-                ts.setAppartment_id(id);
+                Apartment ts = new Apartment();
+                ts.setApartment_id(id);
                 ts.setFloor(rs.getInt("floor"));
                 ts.setRent(rs.getInt("price"));
                 ts.setRooms(rs.getInt("garden"));
@@ -71,10 +80,10 @@ public class Appartment extends Estate{
 
                 //saved new contract
                 Estate c= new Estate(this.getCity(),this.getPostalCode(),this.getStreet(), this.getStreetNumber(), this.getSquareArea());
-                this.setEstate_ID(c.getId());
                 c.save();
+                this.setEstate_ID(c.getId());
 
-                String insertSQL = "INSERT INTO Appartment(floor, rent, rooms, balcony, kitchen, Estate_id) VALUES ( ?, ?, ? , ?, ?, ?)";
+                String insertSQL = "INSERT INTO Apartment(floor, rent, rooms, balcony, kitchen, Estate_id) VALUES ( ?, ?, ? , ?, ?, ?)";
 
                 PreparedStatement pstmt = con.prepareStatement(insertSQL,
                         Statement.RETURN_GENERATED_KEYS);
@@ -82,10 +91,10 @@ public class Appartment extends Estate{
                 pstmt.setInt(1, getFloor());
                 pstmt.setInt(2, getRent());
                 pstmt.setInt(3, getRooms());
-                pstmt.setBoolean(1, isBalcony());
-                pstmt.setBoolean(2, isKitchen());
+                pstmt.setBoolean(4, isBalcony());
+                pstmt.setBoolean(5, isKitchen());
 
-                pstmt.setInt(4, getEstate_ID());
+                pstmt.setInt(6, getEstate_ID());
                 pstmt.executeUpdate();
 
                 ResultSet rs = pstmt.getGeneratedKeys();
@@ -96,13 +105,13 @@ public class Appartment extends Estate{
                 rs.close();
                 pstmt.close();
             } else {
-                String updateSQL = "UPDATE Appartment SET floor = ?, rent = ?, rooms = ? ,balcony = ?, kitchen =?, Estate_id = ?  WHERE id = ?";
+                String updateSQL = "UPDATE Apartment SET floor = ?, rent = ?, rooms = ? ,balcony = ?, kitchen =?, Estate_id = ?  WHERE id = ?";
                 PreparedStatement pstmt = con.prepareStatement(updateSQL);
 
                 pstmt.setInt(1, getFloor());
                 pstmt.setInt(2, getRent());
                 pstmt.setInt(3, getRooms());
-                pstmt.setBoolean(4,isBalcony());
+                pstmt.setBoolean(4, isBalcony());
                 pstmt.setBoolean(5,isKitchen());
                 pstmt.setInt(6, getEstate_ID());
 
@@ -115,12 +124,12 @@ public class Appartment extends Estate{
         }
     }
 
-    public int getAppartment_id() {
-        return appartment_id;
+    public int getApartment_id() {
+        return apartment_id;
     }
 
-    public void setAppartment_id(int appartment_id) {
-        this.appartment_id = appartment_id;
+    public void setApartment_id(int apartment_id) {
+        this.apartment_id = apartment_id;
     }
 
     public int getFloor() {

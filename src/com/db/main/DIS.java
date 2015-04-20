@@ -21,8 +21,13 @@ public class DIS {
 
         new Contract(123, new java.sql.Date(new java.util.Date().getTime()),"iron").save();
         new House("cairo", 123,"holer",5,25,3,23,true).save();
-
+        new Apartment("cairo",123,"hades",5,25,3,1,232,true,false).save();
         new Person("ahmed","elsafty","holsten").save();
+        new TenancyContract(231, new java.sql.Date(new java.util.Date().getTime()),"alex",new java.sql.Date(new java.util.Date().getTime()), 23,900).save();
+        new PurchaseContract(9001,new java.sql.Date(new java.util.Date().getTime()),"hamburg",12,5).save();
+        new Estate("boor",25523,"wazaastreet",2,25).save();
+        new EstateAgent("agency","holer","root","root").save();
+
 
         System.out.println(Model.delete("Person", 1));
 

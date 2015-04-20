@@ -10,7 +10,7 @@ import java.sql.*;
 public class TenancyContract extends Contract{
 
     private int tenancy_id = -1;
-    private String start_date;
+    private Date start_date;
     private int duration;
     private int add_costs;
     private int contract_id = -1;
@@ -19,13 +19,12 @@ public class TenancyContract extends Contract{
         super();
     }
 
-    public TenancyContract(String start_date, int duration, int add_costs){
-        super();
+    public TenancyContract(int contract_number, Date date, String place, Date start_date, int duration, int add_costs) {
+        super(contract_number, date, place);
         this.start_date = start_date;
         this.duration = duration;
         this.add_costs = add_costs;
     }
-
 
     public static TenancyContract load(int id){
         try {
@@ -39,7 +38,7 @@ public class TenancyContract extends Contract{
             if (rs.next()) {
                 TenancyContract ts = new TenancyContract();
                 ts.setTenancy_id(id);
-                ts.setStart_date(rs.getString("installments"));
+                ts.setStart_date(rs.getDate("installments"));
                 ts.setDuration(rs.getInt("place"));
                 ts.setAdd_costs(rs.getInt("add_costs"));
                 ts.setContract_id(rs.getInt("contract_id"));
@@ -74,15 +73,15 @@ public class TenancyContract extends Contract{
 
                 //saved new contract
                 Contract c= new Contract(this.getNumber(),this.getDate(),this.getPlace());
-                this.setContract_id(c.getId());
                 c.save();
+                this.setContract_id(c.getId());
 
                 String insertSQL = "INSERT INTO TenancyContract(start_date, duration, add_costs, Contract_ID) VALUES (?, ?, ?, ?)";
 
                 PreparedStatement pstmt = con.prepareStatement(insertSQL,
                         Statement.RETURN_GENERATED_KEYS);
 
-                pstmt.setString(1, getStart_date());
+                pstmt.setDate(1, getStart_date());
                 pstmt.setInt(2, getDuration());
                 pstmt.setInt(3, getAdd_costs());
                 pstmt.setInt(4, getContract_id());
@@ -99,7 +98,7 @@ public class TenancyContract extends Contract{
                 String updateSQL = "UPDATE Contract SET start_date = ?, duration = ?, add_costs = ? ,contract_ID = ? WHERE id = ?";
                 PreparedStatement pstmt = con.prepareStatement(updateSQL);
 
-                pstmt.setString(1, getStart_date());
+                pstmt.setDate(1, getStart_date());
                 pstmt.setInt(2, getDuration());
                 pstmt.setInt(3, getAdd_costs());
                 pstmt.setInt(4, getContract_id());
@@ -122,11 +121,11 @@ public class TenancyContract extends Contract{
         this.tenancy_id = tenancy_id;
     }
 
-    public String getStart_date() {
+    public Date getStart_date() {
         return start_date;
     }
 
-    public void setStart_date(String start_date) {
+    public void setStart_date(Date start_date) {
         this.start_date = start_date;
     }
 
