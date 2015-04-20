@@ -71,7 +71,7 @@ CREATE TABLE Contract(
 
 CREATE TABLE PurchaseContract(
 	ID int NOT NULL AUTO_INCREMENT,
-	INSTALLEMENTS int,
+	INSTALLMENTS int,
 	INTEREST_RATE float,
     Contract_ID int,
 	PRIMARY KEY (ID),
