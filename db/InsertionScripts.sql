@@ -1,5 +1,5 @@
-INSERT INTO EstateAgent
-values (1,'Ahmed Safty', 'Stellingon', 'Safty', 'hackable');
+INSERT INTO EstateAgent(NAME ,ADDRESS , LOGIN ,PASSWORD )
+values ('Ahmed Safty', 'Stellingon', 'Safty', 'hackable');
 
 INSERT INTO Estate
 values (1,'Hamburg','11242','Hamburg Main street','16','215',1);
