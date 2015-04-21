@@ -6,7 +6,7 @@ use RealStates;# MySQL returned an empty result set (i.e. zero rows).
 
 
 CREATE TABLE EstateAgent(
-	ID int NOT NULL ,
+	ID int NOT NULL AUTO_INCREMENT,
 	NAME varchar(255),
 	ADDRESS varchar(255),
 	LOGIN varchar(5),
@@ -16,7 +16,7 @@ CREATE TABLE EstateAgent(
 	);	# MySQL returned an empty result set (i.e. zero rows).
 
 CREATE TABLE Estate(
-	ID int NOT NULL ,
+	ID int NOT NULL  AUTO_INCREMENT,
 	CITY varchar(50),
 	POSTAL_CODE char(5),
 	STREET varchar(255),
@@ -29,7 +29,7 @@ CREATE TABLE Estate(
 	);# MySQL returned an empty result set (i.e. zero rows).
 
 CREATE TABLE House(
-	ID int NOT NULL ,
+	ID int NOT NULL  AUTO_INCREMENT,
 	FLOORS int,
 	PRICE int,
 	GARDEN boolean,
@@ -41,7 +41,7 @@ CREATE TABLE House(
 
 
 CREATE TABLE Apartment(
-	ID int NOT NULL ,
+	ID int NOT NULL  AUTO_INCREMENT,
 	FLOOR int,
 	RENT int,
 	ROOMS int,
@@ -55,7 +55,7 @@ CREATE TABLE Apartment(
 
 
 CREATE TABLE Person(
-	ID int NOT NULL ,
+	ID int NOT NULL  AUTO_INCREMENT,
 	FIRST_NAME varchar(50),
 	NAME varchar(255),
 	ADDRESS varchar(255),
@@ -64,7 +64,7 @@ CREATE TABLE Person(
 
 #CREATE TABLE PersonEstateContractRelation(
 CREATE TABLE PersonEstateRelation(
-	ID int NOt NULL,
+	ID int NOt NULL  AUTO_INCREMENT,
 	Person_ID int NOT NULL,
 	Estate_ID int NOT NULL,
 	#Contract_ID int NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE PersonEstateRelation(
 );
 
 CREATE TABLE Contract(
-	ID int NOT NULL ,
+	ID int NOT NULL  AUTO_INCREMENT,
 	CONTRACT_NUMBER int,
 	DATE DATETIME ,
 	PLACE varchar(255),
@@ -87,7 +87,7 @@ CREATE TABLE Contract(
 );# MySQL returned an empty result set (i.e. zero rows).
 
 CREATE TABLE PurchaseContract(
-	ID int NOT NULL ,
+	ID int NOT NULL  AUTO_INCREMENT,
 	INSTALLMENTS int,
 	INTEREST_RATE float,
     Contract_ID int,
@@ -96,7 +96,7 @@ CREATE TABLE PurchaseContract(
 );# MySQL returned an empty result set (i.e. zero rows).
 
 CREATE TABLE TenancyContract(
-	ID int NOT NULL ,
+	ID int NOT NULL  AUTO_INCREMENT,
 	START_DATE DATETIME,
 	DURATION int,
 	ADD_COSTS int,
