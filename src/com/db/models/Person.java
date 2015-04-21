@@ -62,11 +62,11 @@ public class Person {
 
 
 
-    public boolean save() {
+    public boolean save() throws Exception{
         // Hole Verbindung
         Connection con = DBConnectionManager.getInstance("mysql").getConnection();
 
-        try {
+
 
             if (getId() == -1) {
                 String insertSQL = "INSERT INTO Person(FIRST_NAME, Name, Address) VALUES (?, ?, ?)";
@@ -101,10 +101,6 @@ public class Person {
                 pstmt.close();
                 return true;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 
     //setters and getters

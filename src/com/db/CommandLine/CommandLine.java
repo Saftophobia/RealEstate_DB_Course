@@ -1,10 +1,7 @@
 package com.db.CommandLine;
 
 import com.db.com.db.controllers.Controller;
-import com.db.models.Apartment;
-import com.db.models.Estate;
-import com.db.models.EstateAgent;
-import com.db.models.House;
+import com.db.models.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -70,7 +67,10 @@ public class CommandLine {
             p("4. Create Apartment");
             p("5. Update Apartment");
             p("6. Delete Apartment");
-
+            p("");
+            p("7. Insert Person");
+            p("8. Sign contract");
+            p("9. List all Contracts");
             p("0. Press to Exit");
 
             String Output = readString();
@@ -99,13 +99,54 @@ public class CommandLine {
                 case "6":
                     DeleteEstate("Apartment");
                     break;
+                case "7":
+                    CreatePerson();
+                    break;
+                case "8":
+                    SignContract();
+                    break;
+                case "9":
+                    ListAllContracts();
+                    break;
+
 
 
             }
         }while(true);
     }
 
+    private void ListAllContracts() {
 
+    }
+
+    private void SignContract() {
+        
+    }
+
+
+    public void CreatePerson(){
+
+        try {
+            p("Please enter the following data:");
+
+            p("First Name:");
+            String FirstName = readString();
+
+            p("Name:");
+            String Name = readString();
+
+            p("Address:");
+            String Address = readString();
+
+            Person p = new Person(FirstName, Name, Address);
+            p.save();
+            p("Person Created Successfully! ---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
+        }catch(Exception e)
+        {
+            p("Error has occured while saving the Person, please try again later!");
+
+        }
+    }
 
 
     public void UpdateHouse()
