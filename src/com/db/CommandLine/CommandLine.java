@@ -6,6 +6,7 @@ import com.db.models.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Date;
 
 /**
  * Created by saftophobia on 4/21/15.
@@ -118,7 +119,80 @@ public class CommandLine {
 
 
     private void SignContract() {
-        
+        p("What kind of Estates would you like to buy");
+        p("1. House");
+        p("2. Apartment");
+        String input = readString();
+        if(input.equalsIgnoreCase("1"))
+        {
+            SignPurchaseContract();
+        }else if(input.equalsIgnoreCase("2")){
+
+            SignTenancyContract();
+        }else{
+            p("please insert a proper Number");
+        }
+    }
+
+    private void SignTenancyContract() {
+        try {
+            p("These are the houses available");
+            Apartment.index();
+
+            p("Please enter the Customer ID");
+            int Estate_ID = Integer.parseInt(readString());
+
+            p("Make Sure your potential customer is available and Registered");
+            boolean empty = Person.index();
+            if (empty) {
+                p("At least one person should be registered");
+            } else {
+                p("Please enter the Customer ID");
+                int Person_ID = Integer.parseInt(readString());
+                PersonEstateRelation per = new PersonEstateRelation(Estate_ID, Person_ID);
+            }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+            p("Something went wrong, please try again later!");
+        }
+    }
+
+    private void SignPurchaseContract(){
+        try {
+            p("These are the houses available");
+            House.index();
+
+            p("Please enter the Customer ID");
+            int Estate_ID = Integer.parseInt(readString());
+
+            p("Make Sure your potential customer is available and Registered");
+            boolean empty = Person.index();
+            if (empty) {
+                p("At least one person should be registered");
+            } else {
+                p("Please enter the Customer ID");
+                int Person_ID = Integer.parseInt(readString());
+                PersonEstateRelation per = new PersonEstateRelation(Estate_ID, Person_ID);
+
+                p("Contract Number:");
+                int Contract_number = Integer.parseInt(readString());
+                p("Place");
+                String place = readString();
+                p("installments");
+                int  installments = Integer.parseInt(readString());
+                p("interestRate");
+                float interestRate = Float.parseFloat(readString());
+                
+                PurchaseContract purchaseContract = new PurchaseContract(Contract_number, new java.sql.Date(new java.util.Date().getTime()), place, per.getId(),installments,interestRate);
+                purchaseContract.save();
+            }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+            p("Something went wrong, please try again later!");
+        }
+
     }
 
     private void ListAllContracts()

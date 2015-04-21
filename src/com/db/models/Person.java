@@ -28,6 +28,28 @@ public class Person {
         Address = address;
     }
 
+
+    public static boolean index(){
+        boolean empty = false;
+        try{
+            Connection con = DBConnectionManager.getInstance("mysql").getConnection();
+            String selectSQL = "Select * from Person";
+
+            PreparedStatement pstmt = con.prepareStatement(selectSQL);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (!rs.next()){ empty = true;}
+            while (rs.next()) {
+                System.out.println("ID " + rs.getInt("ID") + " First_Name: " + rs.getString("First_Name") + "\t Name: " + rs.getString("Name"));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return empty;
+    }
+
+
     public static Person load(int id) {
         try {
             // Hole Verbindung
