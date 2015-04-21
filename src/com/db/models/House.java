@@ -55,6 +55,24 @@ public class House extends Estate {
     }
 
 
+    public static int returnID(int parent_id)
+    {
+        try {
+            Connection con = DBConnectionManager.getInstance("mysql").getConnection();
+            String selectSQL = "SELECT * FROM House WHERE estate_id = ?";
+            PreparedStatement pstmt = con.prepareStatement(selectSQL);
+            pstmt.setInt(1, parent_id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("ID");
+            }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     public static House load(int id){
         try {
             Connection con = DBConnectionManager.getInstance("mysql").getConnection();
@@ -74,6 +92,7 @@ public class House extends Estate {
 
                 //get Associated Contract and load the data
                 Estate ms = Estate.load(ts.getEstate_ID());
+                ts.setId(ms.getId());
                 ts.setCity(ms.getCity());
                 ts.setPostalCode(ms.getPostalCode());
                 ts.setStreet(ms.getStreet());
@@ -102,7 +121,7 @@ public class House extends Estate {
         Estate c = null;
         try {
 
-            if (getId() == -1) {
+            if (getHouse_id() == -1) {
 
                 //saved new contract
                 c= new Estate(this.getCity(),this.getPostalCode(),this.getStreet(), this.getStreetNumber(), this.getSquareArea(), this.getEstateAgent_ID());
@@ -132,6 +151,9 @@ public class House extends Estate {
                 rs.close();
                 pstmt.close();
             } else {
+                c = Estate.load(getEstate_ID());
+                super.save();
+
                 String updateSQL = "UPDATE House SET floors = ?, price = ?, garden = ? ,estate_id = ? WHERE id = ?";
                 PreparedStatement pstmt = con.prepareStatement(updateSQL);
 
@@ -139,7 +161,7 @@ public class House extends Estate {
                 pstmt.setInt(2, getPrice());
                 pstmt.setBoolean(3, isGarden());
                 pstmt.setInt(4, getEstate_ID());
-                pstmt.setInt(5, getId());
+                pstmt.setInt(5, getHouse_id());
                 pstmt.executeUpdate();
 
 

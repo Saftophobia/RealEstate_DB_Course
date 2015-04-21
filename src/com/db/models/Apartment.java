@@ -58,11 +58,32 @@ public class Apartment extends Estate{
             e.printStackTrace();
         }
     }
+
+
+    public static int returnID(int parent_id)
+    {
+        try {
+            Connection con = DBConnectionManager.getInstance("mysql").getConnection();
+            String selectSQL = "SELECT * FROM Apartment WHERE estate_id = ?";
+            PreparedStatement pstmt = con.prepareStatement(selectSQL);
+            pstmt.setInt(1, parent_id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("ID");
+            }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
     public static Apartment load(int id){
         try {
             Connection con = DBConnectionManager.getInstance("mysql").getConnection();
 
-            String selectSQL = "SELECT * FROM House WHERE id = ?";
+            String selectSQL = "SELECT * FROM Apartment WHERE id = ?";
             PreparedStatement pstmt = con.prepareStatement(selectSQL);
             pstmt.setInt(1, id);
 
@@ -71,15 +92,16 @@ public class Apartment extends Estate{
                 Apartment ts = new Apartment();
                 ts.setApartment_id(id);
                 ts.setFloor(rs.getInt("floor"));
-                ts.setRent(rs.getInt("price"));
+                ts.setRent(rs.getInt("rent"));
                 ts.setRooms(rs.getInt("rooms"));
-                ts.setBalcony(rs.getBoolean("garden"));
+                ts.setBalcony(rs.getBoolean("balcony"));
                 ts.setKitchen(rs.getBoolean("kitchen"));
 
                 ts.setEstate_ID(rs.getInt("estate_id"));
 
                 //get Associated Contract and load the data
                 Estate ms = Estate.load(ts.getEstate_ID());
+                ts.setId(ms.getId());
                 ts.setCity(ms.getCity());
                 ts.setPostalCode(ms.getPostalCode());
                 ts.setStreet(ms.getStreet());
@@ -137,6 +159,9 @@ public class Apartment extends Estate{
                 rs.close();
                 pstmt.close();
             } else {
+                c = Estate.load(getEstate_ID());
+                super.save();
+
                 String updateSQL = "UPDATE Apartment SET floor = ?, rent = ?, rooms = ? ,balcony = ?, kitchen =?, Estate_id = ?  WHERE id = ?";
                 PreparedStatement pstmt = con.prepareStatement(updateSQL);
 
@@ -147,7 +172,7 @@ public class Apartment extends Estate{
                 pstmt.setBoolean(5,isKitchen());
                 pstmt.setInt(6, getEstate_ID());
 
-                pstmt.setInt(7, getId());
+                pstmt.setInt(7, getApartment_id());
                 pstmt.executeUpdate();
                 pstmt.close();
             }

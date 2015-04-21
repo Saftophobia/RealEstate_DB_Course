@@ -81,7 +81,9 @@ public class CommandLine {
                 case "1":
                     CreateHouse();
                     break;
-
+                case "2":
+                    UpdateHouse();
+                    break;
                 case "3":
                     DeleteEstate("House");
                     break;
@@ -89,6 +91,11 @@ public class CommandLine {
                 case "4":
                     CreateApartment();
                     break;
+
+                case "5":
+                    UpdateApartment();
+                    break;
+
                 case "6":
                     DeleteEstate("Apartment");
                     break;
@@ -98,6 +105,143 @@ public class CommandLine {
         }while(true);
     }
 
+
+
+
+    public void UpdateHouse()
+    {
+        try {
+            p("These are the housess available");
+            House.index();
+
+            p("Please select the ID of the house you would like to update");
+            int id = Integer.parseInt(readString());
+
+            House c = House.load(House.returnID(id));
+
+            p("Please update the following data:");
+
+
+            p("Current City: " + c.getCity());
+            String input = readString();
+            c.setCity(input.equalsIgnoreCase("") ? c.getCity() : input);
+
+
+            p("Current postalCode: " + c.getPostalCode());
+            input = readString();
+            c.setPostalCode(input.equalsIgnoreCase("") ? c.getPostalCode() :
+                    Integer.parseInt(input));
+
+            p("Current street: " + c.getStreet());
+            input = readString();
+            c.setStreet(input.equalsIgnoreCase("") ? c.getStreet() : input);
+
+
+            p("Current streetNumber: " + c.getStreetNumber());
+            input = readString();
+            c.setStreetNumber(input.equalsIgnoreCase("") ? c.getStreetNumber() : Integer.parseInt(input));
+
+
+            p("Current Square Area: " + c.getSquareArea());
+            input = readString();
+            c.setSquareArea(input.equalsIgnoreCase("") ? c.getSquareArea() : Integer.parseInt(input));
+
+
+            p("Current floors: " + c.getFloors());
+            input = readString();
+            c.setFloors(input.equalsIgnoreCase("") ? c.getFloors() : Integer.parseInt(input));
+
+
+            p("Current price: " + c.getPrice());
+            input = readString();
+            c.setPrice(input.equalsIgnoreCase("") ? c.getPrice() : Integer.parseInt(input));
+
+
+            p("Current garden?: " + c.isGarden());
+            input = readString();
+            c.setGarden(input.equalsIgnoreCase("") ? c.isGarden() : Boolean.parseBoolean(input));
+
+            c.save();
+            p("UPDATE IS FINISHED SUCCESSFULLY!");
+
+        }catch(Exception e){
+            e.printStackTrace();
+            p("UPDATE FAILED, please try again later");
+        }
+
+    }
+
+    public void UpdateApartment()
+    {
+        try {
+            p("These are the housess available");
+            Apartment.index();
+
+            p("Please select the ID of the Apartment you would like to update");
+            int id = Integer.parseInt(readString());
+
+            Apartment c = Apartment.load(Apartment.returnID(id));
+
+            p("Please update the following data:");
+
+
+            p("Current City: " + c.getCity());
+            String input = readString();
+            c.setCity(input.equalsIgnoreCase("") ? c.getCity() : input);
+
+
+            p("Current postalCode: " + c.getPostalCode());
+            input = readString();
+            c.setPostalCode(input.equalsIgnoreCase("") ? c.getPostalCode() :
+                    Integer.parseInt(input));
+
+            p("Current street: " + c.getStreet());
+            input = readString();
+            c.setStreet(input.equalsIgnoreCase("") ? c.getStreet() : input);
+
+
+            p("Current streetNumber: " + c.getStreetNumber());
+            input = readString();
+            c.setStreetNumber(input.equalsIgnoreCase("") ? c.getStreetNumber() : Integer.parseInt(input));
+
+
+            p("Current Square Area: " + c.getSquareArea());
+            input = readString();
+            c.setSquareArea(input.equalsIgnoreCase("") ? c.getSquareArea() : Integer.parseInt(input));
+
+
+            p("Current floor: " + c.getFloor());
+            input = readString();
+            c.setFloor(input.equalsIgnoreCase("") ? c.getFloor() : Integer.parseInt(input));
+
+
+            p("Current Rent: " + c.getRent());
+            input = readString();
+            c.setRent(input.equalsIgnoreCase("") ? c.getRent() : Integer.parseInt(input));
+
+            p("Current rooms: " + c.getRooms());
+            input = readString();
+            c.setRooms(input.equalsIgnoreCase("") ? c.getRooms() : Integer.parseInt(input));
+
+
+            p("Current balcony?: " + c.isBalcony());
+            input = readString();
+            c.setBalcony(input.equalsIgnoreCase("") ? c.isBalcony() : Boolean.parseBoolean(input));
+
+            p("Current garden?: " + c.isKitchen());
+            input = readString();
+            c.setKitchen(input.equalsIgnoreCase("") ? c.isKitchen() : Boolean.parseBoolean(input));
+
+
+            c.save();
+            p("UPDATE IS FINISHED SUCCESSFULLY!");
+
+        }catch(Exception e){
+            e.printStackTrace();
+            p("UPDATE FAILED, please try again later");
+        }
+
+    }
     public void DeleteEstate(String Estate){
 
         try {
