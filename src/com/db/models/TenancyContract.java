@@ -78,8 +78,8 @@ public class TenancyContract extends Contract{
 
             while (rs.next()) {
                 System.out.println("Contract_number: " + rs.getInt("Contract_number") + "\t place: " + rs.getString("place") +
-                        "\t installments: " + rs.getInt("installments") + "\t interest_rate: " + rs.getInt("interest_rate")+
-                        "\t first_name: " + rs.getInt("first_name") + "\t city: " + rs.getInt("city"));
+                        "\t Duration: " + rs.getInt("Duration") + "\t Add_Costs: " + rs.getInt("Add_Costs")+
+                        "\t first_name: " + rs.getString("first_name") + "\t city: " + rs.getString("city"));
             }
         }catch(Exception e){
             e.printStackTrace();
