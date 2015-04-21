@@ -13,7 +13,7 @@ import java.sql.*;
  PRIMARY KEY (ID));
  * Created by saftophobia on 4/13/15.
  */
-public class Person extends Model{
+public class Person {
     private int id = -1 ;
     private String FIRST_NAME;
     private String Name;
@@ -94,6 +94,7 @@ public class Person extends Model{
                 pstmt.setString(1, getFirstName());
                 pstmt.setString(2, getName());
                 pstmt.setString(3, getAddress());
+
                 pstmt.setInt(4, getId());
                 pstmt.executeUpdate();
 

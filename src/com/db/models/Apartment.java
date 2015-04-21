@@ -5,6 +5,16 @@ import com.db.conn.DBConnectionManager;
 import java.sql.*;
 
 /**
+ ID int NOT NULL ,
+ FLOOR int,
+ RENT int,
+ ROOMS int,
+ BALCONY boolean,
+ KITCHEN boolean,
+ Estate_ID int,
+ PRIMARY KEY (ID),
+ FOREIGN KEY (Estate_ID) REFERENCES Estate(ID)
+ ON DELETE CASCADE
  * Created by saftophobia on 4/20/15.
  */
 public class Apartment extends Estate{
@@ -19,13 +29,14 @@ public class Apartment extends Estate{
 
     public Apartment() { super();}
 
-    public Apartment(String city, int postalCode, String street, int streetNumber, int squareArea, int floor, int rent, int rooms, boolean balcony, boolean kitchen) {
-        super(city, postalCode, street, streetNumber, squareArea);
+    public Apartment(String city, int postalCode, String street, int streetNumber, int squareArea, int EstateAgent_ID, int floor, int rent, int rooms, boolean balcony, boolean kitchen, int estate_ID) {
+        super(city, postalCode, street, streetNumber, squareArea, EstateAgent_ID);
         this.floor = floor;
         this.rent = rent;
         this.rooms = rooms;
         this.balcony = balcony;
         this.kitchen = kitchen;
+        Estate_ID = estate_ID;
     }
 
     public static Apartment load(int id){
@@ -42,9 +53,9 @@ public class Apartment extends Estate{
                 ts.setApartment_id(id);
                 ts.setFloor(rs.getInt("floor"));
                 ts.setRent(rs.getInt("price"));
-                ts.setRooms(rs.getInt("garden"));
+                ts.setRooms(rs.getInt("rooms"));
                 ts.setBalcony(rs.getBoolean("garden"));
-                ts.setKitchen(rs.getBoolean("garden"));
+                ts.setKitchen(rs.getBoolean("kitchen"));
 
                 ts.setEstate_ID(rs.getInt("estate_id"));
 
@@ -55,6 +66,7 @@ public class Apartment extends Estate{
                 ts.setStreet(ms.getStreet());
                 ts.setStreetNumber(ms.getStreetNumber());
                 ts.setSquareArea(ms.getSquareArea());
+                ts.setEstateAgent_ID(ms.getEstateAgent_ID());
 
                 rs.close();
                 pstmt.close();
@@ -79,7 +91,7 @@ public class Apartment extends Estate{
             if (getId() == -1) {
 
                 //saved new contract
-                Estate c= new Estate(this.getCity(),this.getPostalCode(),this.getStreet(), this.getStreetNumber(), this.getSquareArea());
+                Estate c= new Estate(this.getCity(),this.getPostalCode(),this.getStreet(), this.getStreetNumber(), this.getSquareArea(),this.getEstateAgent_ID());
                 c.save();
                 this.setEstate_ID(c.getId());
 

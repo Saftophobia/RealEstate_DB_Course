@@ -19,11 +19,12 @@ public class TenancyContract extends Contract{
         super();
     }
 
-    public TenancyContract(int contract_number, Date date, String place, Date start_date, int duration, int add_costs) {
-        super(contract_number, date, place);
+    public TenancyContract(int contract_number, Date date, String place, int PersonEstateID, Date start_date, int duration, int add_costs, int contract_id) {
+        super(contract_number, date, place, PersonEstateID);
         this.start_date = start_date;
         this.duration = duration;
         this.add_costs = add_costs;
+        this.contract_id = contract_id;
     }
 
     public static TenancyContract load(int id){
@@ -45,9 +46,10 @@ public class TenancyContract extends Contract{
 
                 //get Associated Contract and load the data
                 Contract ms = Contract.load(ts.getContract_id());
-                ts.setNumber(ms.getNumber());
+                ts.setContract_number(ms.getContract_number());
                 ts.setDate(ms.getDate());
                 ts.setPlace(ms.getPlace());
+                ts.setPersonEstateID(ms.getPersonEstateID());
 
                 rs.close();
                 pstmt.close();
@@ -72,7 +74,7 @@ public class TenancyContract extends Contract{
             if (getId() == -1) {
 
                 //saved new contract
-                Contract c= new Contract(this.getNumber(),this.getDate(),this.getPlace());
+                Contract c= new Contract(this.getContract_number(),this.getDate(),this.getPlace(),this.getPersonEstateID());
                 c.save();
                 this.setContract_id(c.getId());
 

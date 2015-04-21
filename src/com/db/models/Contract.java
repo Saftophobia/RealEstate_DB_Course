@@ -19,13 +19,15 @@ public class Contract {
     private int contract_number;
     private Date date;
     private String place;
+    private int PersonEstateID;
 
     public Contract(){}
 
-    public Contract(int contract_number, Date date, String place){
+    public Contract(int contract_number, Date date, String place, int PersonEstateID){
         this.contract_number = contract_number;
         this.date = date;
         this.place = place;
+        this.PersonEstateID = PersonEstateID;
     }
 
     public static Contract load(int id) {
@@ -40,7 +42,7 @@ public class Contract {
             if (rs.next()) {
                 Contract ts = new Contract();
                 ts.setId(id);
-                ts.setNumber(rs.getInt("contract_number"));
+                ts.setContract_number(rs.getInt("contract_number"));
                 ts.setDate(rs.getDate("date"));
                 ts.setPlace(rs.getString("place"));
 
@@ -62,14 +64,16 @@ public class Contract {
         try {
 
             if (getId() == -1) {
-                String insertSQL = "INSERT INTO Contract(contract_number, date, place) VALUES (?, ?, ?)";
+                String insertSQL = "INSERT INTO Contract(contract_number, date, place, PE_ID) VALUES (?, ?, ?, ?)";
 
                 PreparedStatement pstmt = con.prepareStatement(insertSQL,
                         Statement.RETURN_GENERATED_KEYS);
 
-                pstmt.setInt(1, getNumber());
+                pstmt.setInt(1, getContract_number());
                 pstmt.setDate(2, getDate());
                 pstmt.setString(3, getPlace());
+                pstmt.setInt(4, getPersonEstateID());
+
                 pstmt.executeUpdate();
 
                 ResultSet rs = pstmt.getGeneratedKeys();
@@ -80,13 +84,16 @@ public class Contract {
                 rs.close();
                 pstmt.close();
             } else {
-                String updateSQL = "UPDATE Contract SET contract_number = ?, date = ?, place = ? WHERE id = ?";
+                String updateSQL = "UPDATE Contract SET contract_number = ?, date = ?, place = ?, PE_ID = ? WHERE id = ?";
                 PreparedStatement pstmt = con.prepareStatement(updateSQL);
 
-                pstmt.setInt(1, getNumber());
+                pstmt.setInt(1, getContract_number());
                 pstmt.setDate(2, getDate());
                 pstmt.setString(3, getPlace());
-                pstmt.setInt(4, getId());
+                pstmt.setInt(4, getPersonEstateID());
+
+
+                pstmt.setInt(5, getId());
                 pstmt.executeUpdate();
 
                 pstmt.close();
@@ -107,13 +114,7 @@ public class Contract {
         this.id = id;
     }
 
-    public int getNumber() {
-        return contract_number;
-    }
 
-    public void setNumber(int number) {
-        this.contract_number = number;
-    }
 
 
     public String getPlace() {
@@ -130,5 +131,21 @@ public class Contract {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public int getContract_number() {
+        return contract_number;
+    }
+
+    public void setContract_number(int contract_number) {
+        this.contract_number = contract_number;
+    }
+
+    public int getPersonEstateID() {
+        return PersonEstateID;
+    }
+
+    public void setPersonEstateID(int personEstateID) {
+        PersonEstateID = personEstateID;
     }
 }

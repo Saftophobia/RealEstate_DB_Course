@@ -5,6 +5,16 @@ import com.db.conn.DBConnectionManager;
 import java.sql.*;
 
 /**
+ CREATE TABLE EstateAgent(
+ ID int NOT NULL ,
+ NAME varchar(255),
+ ADDRESS varchar(255),
+ LOGIN varchar(5),
+ PASSWORD varchar(50),
+ PRIMARY KEY (ID),
+ CONSTRAINT EA_ULoginName UNIQUE (LOGIN)
+ );	# MySQL returned an empty result set (i.e. zero rows).
+ *
  * Created by saftophobia on 4/20/15.
  */
 public class EstateAgent {
@@ -98,6 +108,10 @@ public class EstateAgent {
             e.printStackTrace();
         }
     }
+
+
+
+
 
     public int getId() {
         return id;

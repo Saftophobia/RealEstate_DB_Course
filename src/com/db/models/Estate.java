@@ -5,24 +5,36 @@ import com.db.conn.DBConnectionManager;
 import java.sql.*;
 
 /**
+ ID int NOT NULL ,
+ CITY varchar(50),
+ POSTAL_CODE char(5),
+ STREET varchar(255),
+ STREET_NUMBER char(5),
+ SQUARE_AREA int,
+ EstateAgent_ID int,
+ PRIMARY KEY (ID),
+ FOREIGN KEY (EstateAgent_ID) REFERENCES EstateAgent(ID)
+ ON DELETE CASCADE
  * Created by saftophobia on 4/20/15.
  */
-public class Estate extends Model{
+public class Estate {
     private int id = -1;
     private String city;
     private int postalCode;
     private String street;
     private int streetNumber;
     private int squareArea;
+    private int EstateAgent_ID;
 
     public Estate(){}
 
-    public Estate(String city, int postalCode, String street, int streetNumber, int squareArea) {
+    public Estate(String city, int postalCode, String street, int streetNumber, int squareArea, int EstateAgent_ID) {
         this.city = city;
         this.postalCode = postalCode;
         this.street = street;
         this.streetNumber = streetNumber;
         this.squareArea = squareArea;
+        this.EstateAgent_ID = EstateAgent_ID;
     }
 
 
@@ -43,6 +55,7 @@ public class Estate extends Model{
                 ts.setStreet(rs.getString("street"));
                 ts.setStreetNumber(rs.getInt("street_Number"));
                 ts.setSquareArea(rs.getInt("square_Area"));
+                ts.setEstateAgent_ID(rs.getInt("EstateAgent_ID"));
 
                 rs.close();
                 pstmt.close();
@@ -63,7 +76,7 @@ public class Estate extends Model{
         try {
 
             if (getId() == -1) {
-                String insertSQL = "INSERT INTO Estate(city, postal_Code, street, street_Number, square_Area) VALUES (?, ?, ?, ?, ?)";
+                String insertSQL = "INSERT INTO Estate(city, postal_Code, street, street_Number, square_Area, EstateAgent_ID) VALUES (?, ?, ?, ?, ?, ?)";
 
                 PreparedStatement pstmt = con.prepareStatement(insertSQL,
                         Statement.RETURN_GENERATED_KEYS);
@@ -73,6 +86,8 @@ public class Estate extends Model{
                 pstmt.setString(3, getStreet());
                 pstmt.setInt(4, getStreetNumber());
                 pstmt.setInt(5, getSquareArea());
+                pstmt.setInt(6, getEstateAgent_ID());
+
 
                 pstmt.executeUpdate();
 
@@ -84,7 +99,7 @@ public class Estate extends Model{
                 rs.close();
                 pstmt.close();
             } else {
-                String updateSQL = "UPDATE Estate SET city = ?, postal_Code = ?, street = ?, street_Number= ?, square_Area = ? WHERE id = ?";
+                String updateSQL = "UPDATE Estate SET city = ?, postal_Code = ?, street = ?, street_Number= ?, square_Area = ?, EstateAgent_ID = ? WHERE id = ?";
                 PreparedStatement pstmt = con.prepareStatement(updateSQL);
 
                 pstmt.setString(1, getCity());
@@ -92,8 +107,10 @@ public class Estate extends Model{
                 pstmt.setString(3, getStreet());
                 pstmt.setInt(4, getStreetNumber());
                 pstmt.setInt(5, getSquareArea());
+                pstmt.setInt(6, getEstateAgent_ID());
 
-                pstmt.setInt(6, getId());
+
+                pstmt.setInt(7, getId());
                 pstmt.executeUpdate();
 
                 pstmt.close();
@@ -150,5 +167,13 @@ public class Estate extends Model{
 
     public void setSquareArea(int squareArea) {
         this.squareArea = squareArea;
+    }
+
+    public int getEstateAgent_ID() {
+        return EstateAgent_ID;
+    }
+
+    public void setEstateAgent_ID(int estateAgent_ID) {
+        EstateAgent_ID = estateAgent_ID;
     }
 }

@@ -64,7 +64,7 @@ CREATE TABLE Person(
 
 #CREATE TABLE PersonEstateContractRelation(
 CREATE TABLE PersonEstateRelation(
-	ID int NOt NULL,
+	ID int NOT NULL,
 	Person_ID int NOT NULL,
 	Estate_ID int NOT NULL,
 	#Contract_ID int NOT NULL,
@@ -77,9 +77,9 @@ CREATE TABLE PersonEstateRelation(
 );
 
 CREATE TABLE Contract(
-	ID int NOT NULL ,
+	ID int NOT NULL,
 	CONTRACT_NUMBER int,
-	DATE DATETIME ,
+	DATE DATETIME,
 	PLACE varchar(255),
 	PE_ID int,
 	PRIMARY KEY (ID),

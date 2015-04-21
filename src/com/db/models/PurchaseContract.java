@@ -25,10 +25,11 @@ public class PurchaseContract extends Contract {
         super();
     }
 
-    public PurchaseContract(int contract_number, Date date, String place, int installments, float interestRate) {
-        super(contract_number, date, place);
+    public PurchaseContract(int contract_number, Date date, String place, int PersonEstateID, int installments, float interestRate, int contract_id) {
+        super(contract_number, date, place, PersonEstateID);
         this.installments = installments;
         this.interestRate = interestRate;
+        this.contract_id = contract_id;
     }
 
     public static PurchaseContract load(int id){
@@ -49,9 +50,10 @@ public class PurchaseContract extends Contract {
 
                 //get Associated Contract and load the data
                 Contract ms = Contract.load(ts.getContract_id());
-                ts.setNumber(ms.getNumber());
+                ts.setContract_id(ms.getContract_number());
                 ts.setDate(ms.getDate());
                 ts.setPlace(ms.getPlace());
+                ts.setPersonEstateID(ms.getPersonEstateID());
 
                 rs.close();
                 pstmt.close();
@@ -76,7 +78,7 @@ public class PurchaseContract extends Contract {
             if (getId() == -1) {
 
                 //saved new contract
-                Contract c= new Contract(this.getNumber(),this.getDate(),this.getPlace());
+                Contract c= new Contract(this.getContract_number(),this.getDate(),this.getPlace(),this.getPersonEstateID());
                 c.save();
                 this.setContract_id(c.getId());
 

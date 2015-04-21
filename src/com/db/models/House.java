@@ -5,6 +5,14 @@ import com.db.conn.DBConnectionManager;
 import java.sql.*;
 
 /**
+ ID int NOT NULL ,
+ FLOORS int,
+ PRICE int,
+ GARDEN boolean,
+ Estate_ID int,
+ PRIMARY KEY (ID),
+ FOREIGN KEY (Estate_ID) REFERENCES Estate(ID)
+ ON DELETE CASCADE
 * Created by saftophobia on 4/20/15.
 */
 public class House extends Estate {
@@ -17,11 +25,12 @@ public class House extends Estate {
 
     public House(){ super();}
 
-    public House(String city, int postalCode, String street, int streetNumber, int squareArea, int floors, int price, boolean garden) {
-        super(city, postalCode, street, streetNumber, squareArea);
+    public House(String city, int postalCode, String street, int streetNumber, int squareArea, int EstateAgent_ID, int floors, int price, boolean garden, int estate_ID) {
+        super(city, postalCode, street, streetNumber, squareArea, EstateAgent_ID);
         this.floors = floors;
         this.price = price;
         this.garden = garden;
+        Estate_ID = estate_ID;
     }
 
     public static House load(int id){
@@ -39,7 +48,7 @@ public class House extends Estate {
                 ts.setFloors(rs.getInt("floors"));
                 ts.setPrice(rs.getInt("price"));
                 ts.setGarden(rs.getBoolean("garden"));
-                ts.setEstate_ID(rs.getInt("estate_id"));
+                ts.setEstate_ID(rs.getInt("Estate_ID"));
 
                 //get Associated Contract and load the data
                 Estate ms = Estate.load(ts.getEstate_ID());
@@ -48,6 +57,7 @@ public class House extends Estate {
                 ts.setStreet(ms.getStreet());
                 ts.setStreetNumber(ms.getStreetNumber());
                 ts.setSquareArea(ms.getSquareArea());
+                ts.setEstateAgent_ID(ms.getEstateAgent_ID());
 
                 rs.close();
                 pstmt.close();
@@ -72,7 +82,7 @@ public class House extends Estate {
             if (getId() == -1) {
 
                 //saved new contract
-                Estate c= new Estate(this.getCity(),this.getPostalCode(),this.getStreet(), this.getStreetNumber(), this.getSquareArea());
+                Estate c= new Estate(this.getCity(),this.getPostalCode(),this.getStreet(), this.getStreetNumber(), this.getSquareArea(), this.getEstateAgent_ID());
                 c.save();
                 this.setEstate_ID(c.getId());
 
