@@ -38,6 +38,11 @@ public class EstateAgent {
         h.save();
     }
 
+    public void CreateApartment(String city, int postalCode, String street, int streetNumber, int squareArea,int floor, int rent, int rooms, boolean balcony, boolean kitchen ){
+        Apartment ap = new Apartment(city,postalCode,street,streetNumber,squareArea,this.getId(),floor,rent,rooms,balcony,kitchen, -1);
+        ap.save();
+    }
+
 
     public static EstateAgent load(int id) {
         try {

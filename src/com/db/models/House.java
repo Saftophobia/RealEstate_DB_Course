@@ -1,5 +1,6 @@
 package com.db.models;
 
+import com.db.com.db.controllers.Controller;
 import com.db.conn.DBConnectionManager;
 
 import java.sql.*;
@@ -32,6 +33,27 @@ public class House extends Estate {
         this.garden = garden;
         Estate_ID = estate_ID;
     }
+
+    public static void index(){
+        try{
+            Connection con = DBConnectionManager.getInstance("mysql").getConnection();
+            String selectSQL = "Select Estate.ID,CITY ,POSTAL_CODE ,STREET,STREET_NUMBER,\n" +
+                    "SQUARE_AREA ,FLOORS ,PRICE ,GARDEN \n" +
+                    "from Estate inner join House\n" +
+                    "where Estate.ID=House.Estate_ID\n";
+
+            PreparedStatement pstmt = con.prepareStatement(selectSQL);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                System.out.println("ID: " + rs.getInt("ID") + "\t City: " + rs.getString("City") + "\t Postal Code: " + rs.getInt("postal_code") + "\t Price: " + rs.getInt("price"));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     public static House load(int id){
         try {
@@ -73,18 +95,20 @@ public class House extends Estate {
 
 
     @Override
-    public void save(){
+    public boolean save(){
         // Hole Verbindung
         Connection con = DBConnectionManager.getInstance("mysql").getConnection();
-
+        boolean saved = false;
+        Estate c = null;
         try {
 
             if (getId() == -1) {
 
                 //saved new contract
-                Estate c= new Estate(this.getCity(),this.getPostalCode(),this.getStreet(), this.getStreetNumber(), this.getSquareArea(), this.getEstateAgent_ID());
-                c.save();
+                c= new Estate(this.getCity(),this.getPostalCode(),this.getStreet(), this.getStreetNumber(), this.getSquareArea(), this.getEstateAgent_ID());
+                saved = c.save();
                 this.setEstate_ID(c.getId());
+
 
                 String insertSQL = "INSERT INTO House(floors, price, garden, Estate_ID) VALUES (?, ?, ?, ?)";
 
@@ -122,8 +146,13 @@ public class House extends Estate {
                 pstmt.close();
             }
         } catch (SQLException e) {
+            if (saved) {
+                Controller.delete("Estate", c.getId());
+            }
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
 

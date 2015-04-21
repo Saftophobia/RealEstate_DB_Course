@@ -1,7 +1,10 @@
 package com.db.CommandLine;
 
+import com.db.com.db.controllers.Controller;
+import com.db.models.Apartment;
 import com.db.models.Estate;
 import com.db.models.EstateAgent;
+import com.db.models.House;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -78,11 +81,40 @@ public class CommandLine {
                 case "1":
                     CreateHouse();
                     break;
+
+                case "3":
+                    DeleteEstate("House");
+                    break;
+
+                case "4":
+                    CreateApartment();
+                    break;
+                case "6":
+                    DeleteEstate("Apartment");
+                    break;
+
+
             }
         }while(true);
-
-
     }
+
+    public void DeleteEstate(String Estate){
+
+        try {
+            p("These are the " + Estate+"s available");
+            if (Estate.equalsIgnoreCase("House")){House.index();}else{Apartment.index();};
+
+            p("Please select the ID of the "+ Estate+" you would like to delete");
+            int id = Integer.parseInt(readString());
+            Controller.delete("Estate",id);
+            p(Estate + " Deleted Successfully! ---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
+        }catch(Exception e)
+        {
+            p("Error has occured while Deleting the " + Estate + ", please try again later!");
+        }
+    }
+
+
 
     public void CreateHouse(){
 
@@ -113,18 +145,51 @@ public class CommandLine {
                 p("garden?:");
                 String garden = readString();
 
-                this.getEstateAgent().CreateHouse(City,Integer.parseInt(postalCode),street,Integer.parseInt(streetNumber),Integer.parseInt(squareArea),Integer.parseInt(floors),Integer.parseInt(price),Boolean.parseBoolean(garden));
+                this.getEstateAgent().CreateHouse(City, Integer.parseInt(postalCode), street, Integer.parseInt(streetNumber), Integer.parseInt(squareArea), Integer.parseInt(floors), Integer.parseInt(price), Boolean.parseBoolean(garden));
+                p("Appartment Created Successfully! ---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
             }catch(Exception e)
             {
                 p("Error has occured while saving the house, please try again later!");
 
             }
-
-
-
-
     }
 
+    public void CreateApartment(){
+
+        try {
+            p("Please enter the following data:");
+            p("City:");
+            String City = readString();
+            p("postalCode:");
+            String postalCode = readString();
+            p("street:");
+            String street = readString();
+            p("streetNumber:");
+            String streetNumber = readString();
+            p("Square Area:");
+            String squareArea = readString();
+
+            p("floor:");
+            String floor = readString();
+            p("rent:");
+            String rent = readString();
+            p("rooms:");
+            String rooms = readString();
+            p("balcony?:");
+            String balcony = readString();
+            p("kitchen?:");
+            String kitchen = readString();
+
+
+            this.getEstateAgent().CreateApartment(City, Integer.parseInt(postalCode), street, Integer.parseInt(streetNumber), Integer.parseInt(squareArea),Integer.parseInt(floor), Integer.parseInt(rent),
+                    Integer.parseInt(rooms), Boolean.parseBoolean(balcony),Boolean.parseBoolean(kitchen));
+            p("House Created Successfully! ---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
+        }catch(Exception e)
+        {
+            p("Error has occured while saving the house, please try again later!");
+
+        }
+    }
 
     public String readString() {
         String ret = null;

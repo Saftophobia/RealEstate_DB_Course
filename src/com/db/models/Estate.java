@@ -69,7 +69,7 @@ public class Estate {
 
 
 
-    public void save() {
+    public boolean save() {
         // Hole Verbindung
         Connection con = DBConnectionManager.getInstance("mysql").getConnection();
 
@@ -115,9 +115,12 @@ public class Estate {
 
                 pstmt.close();
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
 
