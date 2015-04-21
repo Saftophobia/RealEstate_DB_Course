@@ -32,6 +32,11 @@ public class EstateAgent {
         this.login = login;
         this.password = password;
     }
+    public void CreateHouse(String city, int postalCode, String street, int streetNumber, int squareArea, int floors, int price, boolean garden)
+    {
+        House h = new House(city,postalCode,street,streetNumber,squareArea,this.getId(),floors,price,garden, -1);
+        h.save();
+    }
 
 
     public static EstateAgent load(int id) {
@@ -62,6 +67,35 @@ public class EstateAgent {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static EstateAgent load(String username, String password) throws SQLException {
+
+        // Hole Verbindung
+        Connection con = DBConnectionManager.getInstance("mysql").getConnection();
+
+        // Erzeuge Anfrage
+        String selectSQL = "SELECT * FROM EstateAgent WHERE login = ? AND password = ?";
+        PreparedStatement pstmt = con.prepareStatement(selectSQL);
+        pstmt.setString(1, username);
+        pstmt.setString(2, password);
+
+        // Führe Anfrage aus
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            EstateAgent ts = new EstateAgent();
+            ts.setId(rs.getInt("ID"));
+            ts.setName(rs.getString("name"));
+            ts.setAddress(rs.getString("address"));
+            ts.setLogin(username);
+            ts.setPassword(password);
+
+            rs.close();
+            pstmt.close();
+            return ts;
+        }else{
+            throw new SQLException();
+        }
     }
 
 

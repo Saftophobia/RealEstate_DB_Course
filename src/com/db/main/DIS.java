@@ -1,16 +1,28 @@
 package com.db.main;
 
-import com.db.com.db.controllers.Controller;
-import com.db.models.*;
 
-
+import com.db.CommandLine.CommandLine;
+import com.db.models.House;
 
 /**
  * Created by saftophobia on 4/20/15.
  */
 public class DIS {
 
+
+
+
+
+
+
+
     public static void main(String [] args){
+
+
+        CommandLine cl = new CommandLine();
+        cl.MainMenuSignedOut();
+
+
 
 
         //new EstateAgent("ahmed","holsteiner","iron","stor").save();
@@ -22,7 +34,7 @@ public class DIS {
 
 
 //        new Contract(123, new java.sql.Date(new java.util.Date().getTime()),"iron").save();
-//        new House("cairo", 123,"holer",5,25,3,23,true).save();
+       //new House("cairo", 123,"holer",5,25,3,23,true).save();
 //        new Apartment("cairo",123,"hades",5,25,3,1,232,true,false).save();
 //        new Person("ahmed","elsafty","holsten").save();
 //        new TenancyContract(231, new java.sql.Date(new java.util.Date().getTime()),"alex",new java.sql.Date(new java.util.Date().getTime()), 23,900).save();
@@ -32,7 +44,7 @@ public class DIS {
 
 
 
-        System.out.println(Controller.delete("EstateAgent", 1));
+        //System.out.println(Controller.delete("EstateAgent", 1));
 
 
     }
