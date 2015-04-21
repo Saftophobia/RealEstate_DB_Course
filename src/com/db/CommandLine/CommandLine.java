@@ -115,12 +115,18 @@ public class CommandLine {
         }while(true);
     }
 
-    private void ListAllContracts() {
 
-    }
 
     private void SignContract() {
         
+    }
+
+    private void ListAllContracts()
+    {
+        p("List of Purchase Contracts: ");
+        PurchaseContract.index();
+        p("List of Tenancy Contracts: ");
+        TenancyContract.index();
     }
 
 

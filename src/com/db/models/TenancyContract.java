@@ -62,7 +62,29 @@ public class TenancyContract extends Contract{
         return null;
     }
 
+    public static void index(){
+        try{
+            Connection con = DBConnectionManager.getInstance("mysql").getConnection();
+            String selectSQL = "SELECT CONTRACT_NUMBER ,DATE, PLACE ,START_DATE ,DURATION ,\n" +
+                    "\tADD_COSTS ,FIRST_NAME ,\tNAME ,CITY ,POSTAL_CODE ,STREET ,STREET_NUMBER ,SQUARE_AREA \n" +
+                    "from Contract inner join TenancyContract on Contract_ID = Contract.ID\n" +
+                    "inner join PersonEstateRelation on PersonEstateRelation.ID = PE_ID\n" +
+                    "inner join Person on Person.ID = Person_ID\n" +
+                    "inner join Estate on Estate.ID = PersonEstateRelation.Estate_ID";
 
+            PreparedStatement pstmt = con.prepareStatement(selectSQL);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                System.out.println("Contract_number: " + rs.getInt("Contract_number") + "\t place: " + rs.getString("place") +
+                        "\t installments: " + rs.getInt("installments") + "\t interest_rate: " + rs.getInt("interest_rate")+
+                        "\t first_name: " + rs.getInt("first_name") + "\t city: " + rs.getInt("city"));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void save(){
