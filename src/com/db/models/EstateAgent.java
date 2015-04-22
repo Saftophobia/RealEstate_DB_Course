@@ -192,4 +192,21 @@ public class EstateAgent {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public static void index(){
+        try{
+            Connection con = DBConnectionManager.getInstance("mysql").getConnection();
+            String selectSQL = "Select * from EstateAgent";
+
+            PreparedStatement pstmt = con.prepareStatement(selectSQL);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                System.out.println("ID: " + rs.getInt("ID") + " Name:" + rs.getString("Name"));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }

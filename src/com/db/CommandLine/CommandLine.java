@@ -25,6 +25,7 @@ public class CommandLine {
 
 
     public void SignIn(){
+
         do{
         p("Please insert your username");
         String username = readString();
@@ -33,16 +34,21 @@ public class CommandLine {
         String password = readString();
 
         //check username and password;
+
         try{
-            EstateAgent estateAgent = EstateAgent.load(username, password);
-            this.setEstateAgent(estateAgent);
-            p("Logged in Success!");
-            break;
+            if(username.equalsIgnoreCase("root") && password.equalsIgnoreCase("root")) {
+                MainMenuAdmin();
+                break;
+            }else{
+                EstateAgent estateAgent = EstateAgent.load(username, password);
+                this.setEstateAgent(estateAgent);
+                p("Logged in Success!");
+                MainMenuSignedIn();
+                break;
+            }
         }catch(Exception e){
             p("Please try again");
         }}while(true);
-
-        MainMenuSignedIn();
 
     }
 
@@ -117,6 +123,76 @@ public class CommandLine {
     }
 
 
+    public void MainMenuAdmin(){
+        do {
+            p("Please select one of the following Options:");
+
+            p("1. Create Agent");
+            p("2. Update Agent");
+            p("3. Delete Agent");
+
+            p("0. Press to Exit");
+
+            String Output = readString();
+            if (Output.equalsIgnoreCase("0")){
+                break;
+            }
+            switch (Output) {
+                case "1":
+                    CreateAgent();
+                    break;
+                case "2":
+                    DeleteAgent();
+                    break;
+                case "3":
+                    DeleteAgent();
+                    break;
+            }
+        }while(true);
+    }
+
+    public void CreateAgent(){
+        try {
+            p("Please enter the following data:");
+
+            p("Name:");
+            String Name = readString();
+
+            p("Address:");
+            String Address = readString();
+
+            p("login:");
+            String login = readString();
+
+            p("password:");
+            String password = readString();
+
+
+            EstateAgent p = new EstateAgent(Name, Address, login, password);
+            p.save();
+            p("Agent Created Successfully! ---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
+        }catch(Exception e)
+        {
+            p("Error has occured while saving the Person, please try again later!");
+
+        }
+    }
+
+    public void DeleteAgent(){
+
+        try {
+            p("These are the agents available");
+            EstateAgent.index();
+
+            p("Please select the ID of the Agent you would like to delete");
+            int id = Integer.parseInt(readString());
+            Controller.delete("EstateAgent", id);
+            p("Agent Deleted Successfully! ---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
+        }catch(Exception e)
+        {
+            p("Error has occured while Deleting the Agent please try again later!");
+        }
+    }
 
     private void SignContract() {
         p("What kind of Estates would you like to buy");
@@ -137,6 +213,7 @@ public class CommandLine {
 
 
     private void SignPurchaseContract(){
+        boolean saved = true;
         try {
             p("These are the houses available");
             House.index();
@@ -152,20 +229,23 @@ public class CommandLine {
                 p("Please enter the Customer ID");
                 int Person_ID = Integer.parseInt(readString());
                 PersonEstateRelation per = new PersonEstateRelation(Estate_ID, Person_ID);
-                per.save();
+                saved = per.save();
+                if(saved) {
+                    p("Contract Number:");
+                    int Contract_number = Integer.parseInt(readString());
+                    p("Place");
+                    String place = readString();
+                    p("installments");
+                    int installments = Integer.parseInt(readString());
+                    p("interestRate");
+                    float interestRate = Float.parseFloat(readString());
 
-                p("Contract Number:");
-                int Contract_number = Integer.parseInt(readString());
-                p("Place");
-                String place = readString();
-                p("installments");
-                int  installments = Integer.parseInt(readString());
-                p("interestRate");
-                float interestRate = Float.parseFloat(readString());
-                
-                PurchaseContract purchaseContract = new PurchaseContract(Contract_number, new java.sql.Date(new java.util.Date().getTime()), place, per.getId(),installments,interestRate);
-                purchaseContract.save();
-                p("SUCCESS!");
+                    PurchaseContract purchaseContract = new PurchaseContract(Contract_number, new java.sql.Date(new java.util.Date().getTime()), place, per.getId(), installments, interestRate);
+                    purchaseContract.save();
+                    p("SUCCESS!");
+                }else{
+                    p("House is rented!");
+                }
             }
         }catch(Exception e)
         {
@@ -176,6 +256,7 @@ public class CommandLine {
     }
 
     private void SignTenancyContract(){
+        boolean saved = true;
         try {
             p("These are the Apartment available");
             Apartment.index();
@@ -191,22 +272,26 @@ public class CommandLine {
                 p("Please enter the Customer ID");
                 int Person_ID = Integer.parseInt(readString());
                 PersonEstateRelation per = new PersonEstateRelation(Estate_ID, Person_ID);
-                per.save();
+                saved = per.save();
 
-                p("Contract Number:");
-                int Contract_number = Integer.parseInt(readString());
-                p("Place");
-                String place = readString();
-                Date start_date = new java.sql.Date(new java.util.Date().getTime());
-                p("Duration");
-                int  duration = Integer.parseInt(readString());
-                p("Additional Costs: ");
-                int  add_costs = Integer.parseInt(readString());
+                if(saved) {
+                    p("Contract Number:");
+                    int Contract_number = Integer.parseInt(readString());
+                    p("Place");
+                    String place = readString();
+                    Date start_date = new java.sql.Date(new java.util.Date().getTime());
+                    p("Duration");
+                    int duration = Integer.parseInt(readString());
+                    p("Additional Costs: ");
+                    int add_costs = Integer.parseInt(readString());
 
-                TenancyContract tenancyContract = new TenancyContract(Contract_number, new java.sql.Date(new java.util.Date().getTime()), place, per.getId(),start_date,duration, add_costs);
+                    TenancyContract tenancyContract = new TenancyContract(Contract_number, new java.sql.Date(new java.util.Date().getTime()), place, per.getId(), start_date, duration, add_costs);
 
-                tenancyContract.save();
-                p("SUCCESS!");
+                    tenancyContract.save();
+                    p("SUCCESS!");
+                }else{
+                    p("this apartment is rented!");
+                }
             }
         }catch(Exception e)
         {
@@ -385,15 +470,18 @@ public class CommandLine {
 
     }
     public void DeleteEstate(String Estate){
-
+        boolean empty = true;
         try {
             p("These are the " + Estate+"s available");
-            if (Estate.equalsIgnoreCase("House")){House.index();}else{Apartment.index();};
-
-            p("Please select the ID of the "+ Estate+" you would like to delete");
-            int id = Integer.parseInt(readString());
-            Controller.delete("Estate",id);
-            p(Estate + " Deleted Successfully! ---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
+            if (Estate.equalsIgnoreCase("House")){empty = House.index();}else{ empty = Apartment.index();};
+            if(!empty) {
+                p("Please select the ID of the " + Estate + " you would like to delete");
+                int id = Integer.parseInt(readString());
+                Controller.delete("Estate", id);
+                p(Estate + " Deleted Successfully! ---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
+            }else{
+                p("there are no Estates to delete");
+            }
         }catch(Exception e)
         {
             p("Error has occured while Deleting the " + Estate + ", please try again later!");

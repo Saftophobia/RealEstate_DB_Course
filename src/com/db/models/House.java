@@ -34,7 +34,8 @@ public class House extends Estate {
         Estate_ID = estate_ID;
     }
 
-    public static void index(){
+    public static boolean index(){
+        boolean empty = true;
         try{
             Connection con = DBConnectionManager.getInstance("mysql").getConnection();
             String selectSQL = "Select Estate.ID,CITY ,POSTAL_CODE ,STREET,STREET_NUMBER,\n" +
@@ -45,13 +46,19 @@ public class House extends Estate {
             PreparedStatement pstmt = con.prepareStatement(selectSQL);
 
             ResultSet rs = pstmt.executeQuery();
-
+            int count = 0;
             while (rs.next()) {
                 System.out.println("ID: " + rs.getInt("ID") + "\t City: " + rs.getString("City") + "\t Postal Code: " + rs.getInt("postal_code") + "\t Price: " + rs.getInt("price"));
+                count ++;
             }
+            if(count > 0){
+                empty = false;
+            }
+            return empty;
         }catch(Exception e){
             e.printStackTrace();
         }
+        return empty;
     }
 
 
