@@ -2,3 +2,4 @@ TO Do list
 1- Check for unique contract number
 2- Change to DB2
 3- Check every statement validity against Estate Agent ID
+4- Roll back on contract save error
