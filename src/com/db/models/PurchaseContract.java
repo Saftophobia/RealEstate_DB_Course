@@ -25,11 +25,10 @@ public class PurchaseContract extends Contract {
         super();
     }
 
-    public PurchaseContract(int contract_number, Date date, String place, int PersonEstateID, int installments, float interestRate, int contract_id) {
+    public PurchaseContract(int contract_number, Date date, String place, int PersonEstateID, int installments, float interestRate) {
         super(contract_number, date, place, PersonEstateID);
         this.installments = installments;
         this.interestRate = interestRate;
-        this.contract_id = contract_id;
     }
 
 
@@ -49,8 +48,8 @@ public class PurchaseContract extends Contract {
 
             while (rs.next()) {
                 System.out.println("Contract_number: " + rs.getInt("Contract_number") + "\t place: " + rs.getString("place") +
-                        "\t installments: " + rs.getInt("installments") + "\t interest_rate: " + rs.getInt("interest_rate")+
-                        "\t first_name: " + rs.getInt("first_name") + "\t city: " + rs.getInt("city"));
+                        "\t installments: " + rs.getInt("installments") + "\t interest_rate: " + rs.getFloat("interest_rate")+
+                        "\t first_name: " + rs.getString("first_name") + "\t city: " + rs.getString("city"));
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -75,7 +74,8 @@ public class PurchaseContract extends Contract {
 
                 //get Associated Contract and load the data
                 Contract ms = Contract.load(ts.getContract_id());
-                ts.setContract_id(ms.getContract_number());
+                ts.setId(ms.getId());
+                ts.setContract_number(ms.getContract_number());
                 ts.setDate(ms.getDate());
                 ts.setPlace(ms.getPlace());
                 ts.setPersonEstateID(ms.getPersonEstateID());
@@ -100,7 +100,7 @@ public class PurchaseContract extends Contract {
 
         try {
 
-            if (getId() == -1) {
+            if (getPurchase_id() == -1) {
 
                 //saved new contract
                 Contract c= new Contract(this.getContract_number(),this.getDate(),this.getPlace(),this.getPersonEstateID());
@@ -131,7 +131,7 @@ public class PurchaseContract extends Contract {
                 pstmt.setInt(1, getInstallments());
                 pstmt.setFloat(2, getInterestRate());
                 pstmt.setInt(3, getContract_id());
-                pstmt.setInt(4, getId());
+                pstmt.setInt(4, getPurchase_id());
                 pstmt.executeUpdate();
 
                 pstmt.close();

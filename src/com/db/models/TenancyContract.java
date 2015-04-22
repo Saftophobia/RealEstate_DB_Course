@@ -19,12 +19,11 @@ public class TenancyContract extends Contract{
         super();
     }
 
-    public TenancyContract(int contract_number, Date date, String place, int PersonEstateID, Date start_date, int duration, int add_costs, int contract_id) {
+    public TenancyContract(int contract_number, Date date, String place, int PersonEstateID, Date start_date, int duration, int add_costs) {
         super(contract_number, date, place, PersonEstateID);
         this.start_date = start_date;
         this.duration = duration;
         this.add_costs = add_costs;
-        this.contract_id = contract_id;
     }
 
     public static TenancyContract load(int id){
@@ -78,8 +77,8 @@ public class TenancyContract extends Contract{
 
             while (rs.next()) {
                 System.out.println("Contract_number: " + rs.getInt("Contract_number") + "\t place: " + rs.getString("place") +
-                        "\t installments: " + rs.getInt("installments") + "\t interest_rate: " + rs.getInt("interest_rate")+
-                        "\t first_name: " + rs.getInt("first_name") + "\t city: " + rs.getInt("city"));
+                        "\t Duration: " + rs.getInt("Duration") + "\t Add_Costs: " + rs.getInt("Add_Costs")+
+                        "\t first_name: " + rs.getString("first_name") + "\t city: " + rs.getString("city"));
             }
         }catch(Exception e){
             e.printStackTrace();
