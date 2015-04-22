@@ -19,12 +19,11 @@ public class TenancyContract extends Contract{
         super();
     }
 
-    public TenancyContract(int contract_number, Date date, String place, int PersonEstateID, Date start_date, int duration, int add_costs, int contract_id) {
+    public TenancyContract(int contract_number, Date date, String place, int PersonEstateID, Date start_date, int duration, int add_costs) {
         super(contract_number, date, place, PersonEstateID);
         this.start_date = start_date;
         this.duration = duration;
         this.add_costs = add_costs;
-        this.contract_id = contract_id;
     }
 
     public static TenancyContract load(int id){

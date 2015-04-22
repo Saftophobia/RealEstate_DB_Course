@@ -134,36 +134,14 @@ public class CommandLine {
         }
     }
 
-    private void SignTenancyContract() {
-        try {
-            p("These are the houses available");
-            Apartment.index();
 
-            p("Please enter the Customer ID");
-            int Estate_ID = Integer.parseInt(readString());
-
-            p("Make Sure your potential customer is available and Registered");
-            boolean empty = Person.index();
-            if (empty) {
-                p("At least one person should be registered");
-            } else {
-                p("Please enter the Customer ID");
-                int Person_ID = Integer.parseInt(readString());
-                PersonEstateRelation per = new PersonEstateRelation(Estate_ID, Person_ID);
-            }
-        }catch(Exception e)
-        {
-            e.printStackTrace();
-            p("Something went wrong, please try again later!");
-        }
-    }
 
     private void SignPurchaseContract(){
         try {
             p("These are the houses available");
             House.index();
 
-            p("Please enter the Customer ID");
+            p("Please enter the House ID");
             int Estate_ID = Integer.parseInt(readString());
 
             p("Make Sure your potential customer is available and Registered");
@@ -174,6 +152,7 @@ public class CommandLine {
                 p("Please enter the Customer ID");
                 int Person_ID = Integer.parseInt(readString());
                 PersonEstateRelation per = new PersonEstateRelation(Estate_ID, Person_ID);
+                per.save();
 
                 p("Contract Number:");
                 int Contract_number = Integer.parseInt(readString());
@@ -186,6 +165,48 @@ public class CommandLine {
                 
                 PurchaseContract purchaseContract = new PurchaseContract(Contract_number, new java.sql.Date(new java.util.Date().getTime()), place, per.getId(),installments,interestRate);
                 purchaseContract.save();
+                p("SUCCESS!");
+            }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+            p("Something went wrong, please try again later!");
+        }
+
+    }
+
+    private void SignTenancyContract(){
+        try {
+            p("These are the Apartment available");
+            Apartment.index();
+
+            p("Please enter the Apartment ID");
+            int Estate_ID = Integer.parseInt(readString());
+
+            p("Make Sure your potential customer is available and Registered");
+            boolean empty = Person.index();
+            if (empty) {
+                p("At least one person should be registered");
+            } else {
+                p("Please enter the Customer ID");
+                int Person_ID = Integer.parseInt(readString());
+                PersonEstateRelation per = new PersonEstateRelation(Estate_ID, Person_ID);
+                per.save();
+
+                p("Contract Number:");
+                int Contract_number = Integer.parseInt(readString());
+                p("Place");
+                String place = readString();
+                Date start_date = new java.sql.Date(new java.util.Date().getTime());
+                p("Duration");
+                int  duration = Integer.parseInt(readString());
+                p("Additional Costs: ");
+                int  add_costs = Integer.parseInt(readString());
+
+                TenancyContract tenancyContract = new TenancyContract(Contract_number, new java.sql.Date(new java.util.Date().getTime()), place, per.getId(),start_date,duration, add_costs);
+
+                tenancyContract.save();
+                p("SUCCESS!");
             }
         }catch(Exception e)
         {
