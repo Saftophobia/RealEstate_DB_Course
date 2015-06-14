@@ -1,0 +1,14 @@
+-1,newtransaction,null
+16,WRITE,User 1 is saying Hi at 1433949238934
+14,WRITE,User 1 is saying Hi at 1433949239042
+18,WRITE,User 1 is saying Hi at 1433949239374
+14,WRITE,User 1 is saying Hi at 1433949239472
+19,WRITE,User 1 is saying Hi at 1433949240365
+15,WRITE,User 1 is saying Hi at 1433949240539
+17,WRITE,User 1 is saying Hi at 1433949241323
+18,WRITE,User 1 is saying Hi at 1433949241826
+19,WRITE,User 1 is saying Hi at 1433949242782
+11,WRITE,User 1 is saying Hi at 1433949243266
+13,WRITE,User 1 is saying Hi at 1433949243415
+-1,COMMIT,null
+-1,PUSHED,null

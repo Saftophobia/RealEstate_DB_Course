@@ -1,0 +1,4 @@
+-1,newtransaction,null
+22,WRITE,User 2 is saying Hi at 1433949238935
+-1,COMMIT,null
+-1,PUSHED,null
